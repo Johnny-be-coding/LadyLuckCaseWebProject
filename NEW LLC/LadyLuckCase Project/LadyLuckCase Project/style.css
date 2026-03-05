@@ -1,0 +1,190 @@
+:root{
+
+--bg:#0a0514;
+
+--gold:#ffd700;
+--red:#ff3a3a;
+--pink:#ff79c9;
+--purple:#b87cff;
+--blue:#5fb5ff;
+
+}
+
+body{
+
+margin:0;
+font-family:Roboto;
+background:var(--bg);
+color:white;
+text-align:center;
+
+}
+
+header{
+padding:40px;
+}
+
+h1{
+
+font-family:'Playfair Display';
+font-size:60px;
+color:var(--gold);
+
+}
+
+.subtitle{
+color:#ff9ec1;
+font-size:20px;
+}
+
+.case-wrapper{
+margin-top:40px;
+}
+
+.case-container{
+width:320px;
+margin:auto;
+}
+
+.case{
+
+position:relative;
+border-radius:25px;
+overflow:hidden;
+cursor:pointer;
+
+box-shadow:0 20px 60px rgba(0,0,0,0.8);
+
+}
+
+.case img{
+width:100%;
+display:block;
+}
+
+.case-glow{
+
+position:absolute;
+inset:0;
+
+opacity:0;
+transition:0.6s;
+
+}
+
+.open-btn{
+
+margin-top:30px;
+
+padding:18px 60px;
+
+font-size:20px;
+
+border:none;
+border-radius:50px;
+
+background:#ff2e7a;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+.reel-container{
+
+display:none;
+
+margin-top:60px;
+
+width:90%;
+max-width:900px;
+
+overflow:hidden;
+
+border:5px solid #222;
+
+margin-left:auto;
+margin-right:auto;
+
+}
+
+.reel{
+
+display:flex;
+gap:20px;
+padding:30px;
+
+}
+
+.reel-item{
+
+width:160px;
+height:200px;
+
+background:#111;
+
+border-radius:12px;
+
+padding:10px;
+
+text-align:center;
+
+}
+
+.reel-item img{
+
+width:100%;
+height:110px;
+
+object-fit:contain;
+
+}
+
+.skin-card{
+
+margin-top:40px;
+
+background:#1a0f2a;
+
+padding:30px;
+
+border-radius:20px;
+
+}
+
+.new-case-btn{
+
+display:none;
+
+margin-top:40px;
+
+padding:16px 50px;
+
+font-size:18px;
+
+border:none;
+
+border-radius:40px;
+
+background:#444;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+/* rarity colors */
+
+.gold{border:3px solid var(--gold);}
+.red{border:3px solid var(--red);}
+.pink{border:3px solid var(--pink);}
+.purple{border:3px solid var(--purple);}
+.blue{border:3px solid var(--blue);}
+
+.glow-gold{box-shadow:0 0 120px var(--gold);}
+.glow-red{box-shadow:0 0 120px var(--red);}
+.glow-pink{box-shadow:0 0 120px var(--pink);}
+.glow-purple{box-shadow:0 0 120px var(--purple);}
+.glow-blue{box-shadow:0 0 120px var(--blue);}
