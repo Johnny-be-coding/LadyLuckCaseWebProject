@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lady Luck Case</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+  <h1>Lady Luck Case</h1>
+  <div class="subtitle">8 Март Collection</div>
+</header>
+
+<main>
+
+<div class="case-wrapper">
+
+  <div class="case-container">
+    <div class="case" id="case">
+      <img id="caseImage" src="pictures/CaseDone.jpg" alt="Case">
+      <div class="case-glow" id="caseGlow"></div>
+    </div>
+  </div>
+
+  <button id="openBtn" class="open-btn">Отвори Lady Luck Case</button>
+</div>
+
+<div class="reel-container" id="reelContainer">
+  <div class="reel" id="reel"></div>
+</div>
+
+<div id="result" class="result"></div>
+
+<button id="newCaseBtn" class="new-case-btn">Отвори нова кутия</button>
+
+<script>
+const skins = [
+  { name:"P250", rarity:"blue", chance:80, img:"pictures/P250Done.jpg" },
+  { name:"Tec 9", rarity:"blue", chance:80, img:"pictures/Tec9Done.jpg" },
+  { name:"USP-S", rarity:"blue", chance:80, img:"pictures/USPsDone.jpg" },
+  { name:"Shadow Daggers", rarity:"gold", chance:0.26, img:"pictures/ShadowDaggersDone.png" },
+  { name:"M4A4", rarity:"red", chance:0.64, img:"pictures/m4a4Done.png" },
+  { name:"AK 47", rarity:"red", chance:0.64, img:"pictures/ak 47Done.png" },
+  { name:"Five Seven", rarity:"blue", chance:80, img:"pictures/FiveSevenDone.jpg" },
+  { name:"Famas", rarity:"blue", chance:80, img:"pictures/FamasDone.jpg" },
+  { name:"Mag7", rarity:"blue", chance:80, img:"pictures/Mag7Done.png" },
+  { name:"Mp7", rarity:"blue", chance:80, img:"pictures/Mp7Done.jpg" },
+  { name:"Nova", rarity:"blue", chance:80, img:"pictures/NovaDone.jpg" },
+  { name:"Deagle", rarity:"pink", chance:3, img:"pictures/DeagleDone.jpg" },
+  { name:"Mp5 SD", rarity:"purple", chance:15, img:"pictures/Mp5 SD.jpg" },
+  { name:"Mac 10", rarity:"purple", chance:15, img:"pictures/Mac10Done.jpg" },
+  { name:"Xm9", rarity:"blue", chance:80, img:"pictures/Xm9Done.jpg" },
+  { name:"AWP", rarity:"pink", chance:3, img:"pictures/AwpDone.jpg" }
+];
+
+const reel = document.getElementById("reel");
+const reelContainer = document.getElementById("reelContainer");
+const openBtn = document.getElementById("openBtn");
+const result = document.getElementById("result");
+const newCaseBtn = document.getElementById("newCaseBtn");
+const glow = document.getElementById("caseGlow");
+
+let spinningSound;
+
+function pickSkin() {
+  let total = skins.reduce((a,b)=>a+b.chance,0);
+  let r = Math.random()*total;
+  let sum = 0;
+  for(let s of skins){
+    sum += s.chance;
+    if(r <= sum) return s;
+  }
+}
+
+function createReel(winner){
+  reel.innerHTML = "";
+  let items = [];
+  for(let i=0;i<6;i++) skins.forEach(s=>items.push(s));
+  let winPos = 40 + Math.floor(Math.random()*5);
+  items[winPos] = winner;
+
+  items.forEach(s=>{
+    let div = document.createElement("div");
+    div.className = "reel-item "+s.rarity;
+    div.innerHTML = `<img src="${s.img}"><div>${s.name}</div>`;
+    reel.appendChild(div);
+  });
+
+  reelContainer.style.display="block";
+  let itemWidth = 180;
+  let target = winPos*itemWidth - 400;
+  let start = null;
+
+  spinningSound = new Audio("d:\NEW LLC\LadyLuckCase Project\LadyLuckCase Project\sounds\spin.mp3");
+  spinningSound.loop = true;
+  spinningSound.volume = 0.5;
+  spinningSound.play();
+
+  function animate(t){
+    if(!start) start=t;
+    let progress=(t-start)/5000;
+    if(progress>1) progress=1;
+    let ease = 1 - Math.pow(1-progress,3);
+    reel.style.transform = `translateX(-${ease*target}px)`;
+    if(progress < 1){
+      requestAnimationFrame(animate);
+    } else {
+      spinningSound.pause();
+      showResult(winner);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function showResult(skin){
+  glow.className = "case-glow glow-"+skin.rarity;
+  glow.style.opacity = 1;
+  result.innerHTML = `
+    <div class="skin-card ${skin.rarity}">
+      <h2>${skin.name}</h2>
+      <img src="${skin.img}" width="200">
+      <p>Rarity: ${skin.rarity.toUpperCase()}</p>
+    </div>
+  `;
+  newCaseBtn.style.display="inline-block";
+}
+
+// za prerabotka
+
+openBtn.onclick = () => {
+  //openBtn.disabled = true;
+
+  // Създаваме спин звук
+  const spinningSound = new Audio("d:\NEW LLC\LadyLuckCase Project\LadyLuckCase Project\sounds\spin.mp3"); // увери се, че този път е правилен
+  spinningSound.loop = true;  // за да се върти докато Reel-а се движи
+  spinningSound.volume = 0.5;
+
+   //Пускаме звука – гарантирано работи, защото е след клик
+  spinningSound.play().catch(err => console.log("Audio error:", err));
+
+  const winner = pickSkin();
+  createReel(winner, spinningSound); // ще предадем звука на функцията, за да го спрем накрая
+}
+</script>
+
+</main>
+</body>
+</html>
